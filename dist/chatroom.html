@@ -14,7 +14,7 @@
       src="https://kit.fontawesome.com/fd28f5b764.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="./css/kobalongboot.css" />
+    <!-- <link rel="stylesheet" href="./css/kobalongboot.css" /> -->
   </head>
   <body>
     <div class="chat-container">
@@ -22,7 +22,7 @@
         <div class="chat-header">
           <div class="chat-logo">
             <i class="fab fa-rocketchat"></i>
-            <h3>Chatcord</h3>
+            <h3>Chatboks</h3>
           </div>
           <div><button class="chat-leave-btn">Leave Room</button></div>
         </div>
@@ -41,36 +41,29 @@
               </ul>
             </div>
           </div>
-          <div class="chats">
-            <div class="chat-board">
+          <div class="chats" id="chats">
+            <!-- <div class="chat-board" id="chat-board">
               <div class="chat-board-info">
                 <p><b>kobin</b></p>
                 <p><b>17-01-2021</b></p>
               </div>
               <div class="chat-board-text">
-                <p>
-                  bla....bla....bla....bla....bla....bla....bla....bla....bla....
-                </p>
+                <div id="chatmessagebox"></div>
               </div>
-            </div>
-            <div class="chat-board">
-              <div class="chat-board-info">
-                <p><b>kobin</b></p>
-                <p><b>17-01-2021</b></p>
-              </div>
-              <div class="chat-board-text">
-                <p>
-                  bla....bla....bla....bla....bla....bla....bla....bla....bla....
-                </p>
-              </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <form class="chat-message">
-          <input placeholder="Enter Message" type="text" class="form-input" />
+          <input
+            placeholder="Enter Message"
+            type="text"
+            class="form-input"
+            id="messageSent"
+          />
           <input type="submit" value="Send" class="form-submit" />
         </form>
       </div>
     </div>
-  </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="chatroom.bundle.js"></script>
 </html>

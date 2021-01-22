@@ -109,6 +109,7 @@ h1 {
 .chats {
   background-color: #bec5f5;
   width: 80%;
+  overflow: auto;
 }
 .chat-message {
   display: flex;
