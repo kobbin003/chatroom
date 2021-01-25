@@ -99,8 +99,9 @@ h1 {
   /* max-width: 10px; */
 }
 .lists-items {
-  height: 80%;
+  /* height: 80%; */
   padding: 0.5rem;
+  padding-bottom: 1rem;
 }
 .user-list {
   text-decoration: none;
@@ -115,6 +116,7 @@ h1 {
 .chats {
   background-color: #bec5f5;
   width: 80%;
+  min-height: 50vh;
   max-height: 100%;
   overflow: auto;
 }

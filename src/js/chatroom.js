@@ -97,6 +97,13 @@ function outputMessage(message) {
 function showUserList(lists) {
   const userList = document.querySelector(".user-list");
   /** empty list before adding the list */
-  userList.innerHTML = "";
-  lists.forEach((list) => (userList.innerHTML += `<li>${list.username}</li>`));
+  // 1.
+  // userList.innerHTML = "";
+  // lists.forEach((list) => (userList.innerHTML += `<li>${list.username}</li>`));
+  // OR
+  // 2.
+  userList.innerHTML = lists
+    .map((list) => `<li>${list.username}</li>`)
+    .join("");
+  /** with the second way, u dont have to worry about emptying the innerHTML */
 }
