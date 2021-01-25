@@ -2,32 +2,67 @@ const express = require("express");
 const path = require("path");
 const http = require("http");
 const socket = require("socket.io");
+const formatMessage = require("./src/utils/formatmessage");
+const {
+  joinRoom,
+  findUser,
+  deleteUserFromList,
+  usersList,
+} = require("./src/utils/functions");
 const app = express();
-/** webpack */
-// const webpack = require("webpack");
-// const webpackDevMiddleware = require("webpack-dev-middleware");
-// const config = require("./webpack.config");
-// const compiler = webpack(config);
+
 /** creating server by using http */
 const server = http.createServer(app);
 const folderToServe = path.join(__dirname, "dist");
 const port = process.env.PORT || 3000;
 const io = socket(server);
+const botname = "chatboks bot";
 io.on("connection", (socket) => {
-  // console.log("new ws connection");
-  // socket.on("chat message", (msg) => {
-  //   console.log("message:" + msg);
-  // });
-  socket.emit("message", "Welcome to chatcord!");
-  /** Broadcast when a user connects */
-  socket.broadcast.emit("message", "A user has joined the chat");
-  /** Runs when client disconnects */
-  socket.on("disconnect", (msg) => {
-    io.emit("message", "A user has left the chat");
+  // console.log(socket.id);
+  /** on joining room */
+
+  socket.on("join-room", ({ username, room }) => {
+    const user = joinRoom(socket.id, username, room);
+    // console.log("user-list-server", usersList);
+    socket.join(user.room);
+    socket.emit("message", formatMessage(botname, "Welcome to chatboks!"));
+
+    /** Broadcast when a user connects */
+    socket.broadcast
+      .to(user.room)
+      .emit(
+        "message",
+        formatMessage(botname, `${username} has joined the chat`)
+      );
+    const usersFromTheSameRoom = usersList.filter((user) => user.room === room);
+    io.to(room).emit("user-list", usersFromTheSameRoom);
   });
+
   /** emit the message received */
   socket.on("chatmessage", (message) => {
-    io.emit("chatmessage", `${message}`);
+    const user = message.user;
+    const msg = message.msg;
+    io.to(message.room).emit("chatmessage", formatMessage(user, msg));
+  });
+
+  /** Runs when client disconnects */
+  socket.on("disconnect", (msg) => {
+    const user = findUser(socket.id);
+    // console.log("user", user);
+    if (user) {
+      /** renew the user-list */
+      const usersFromTheSameRoom = usersList.filter(
+        (users) => users.room === user.room
+      );
+      io.to(user.room).emit("user-list", usersFromTheSameRoom);
+      io.to(user.room).emit(
+        "message",
+        formatMessage(botname, `${user.username} has left the chat`)
+      );
+    }
+    /** remove it from the list */
+    deleteUserFromList(socket.id);
+    console.log("userlist-afterall", usersList);
   });
 });
 // app.get("/", (req, res) => {

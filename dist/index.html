@@ -30,23 +30,23 @@
           </div>
         </header>
         <div class="loginbody p-4">
-          <form class="">
+          <form class="loginform" method="POST" action="./chatroom.html">
             <div class="px-3 pt-2 pb-2 d-flex flex-column">
               <label class="text-secondary">Username</label>
-              <input placeholder="enter username..." class="pe-5 ps-2" />
+              <input placeholder="enter username..." class="pe-5 ps-2" id="username" />
             </div>
             <div class="px-3 pt-2 pb-2 d-flex flex-column">
               <label class="text-secondary">Room</label>
-              <select class="pe-5 ps-2 py-1">
+              <select class="pe-5 ps-2 py-1" id="room">
                 <option>One</option>
                 <option>Two</option>
                 <option>Three</option>
               </select>
             </div>
-            <div class="px-3 pt-2 pb-2 d-flex flex-column">
-              <a href="/chatroom.html"
-                ><button type="submit">join chat</button></a
-              >
+            <div class="px-3 pt-2 pb-2 d-flex flex-column ">
+              <button type="submit" class="join-chat" >
+                <i class="fas fa-sign-in-alt join-in"></i>join chat
+              </button>
             </div>
           </form>
         </div>

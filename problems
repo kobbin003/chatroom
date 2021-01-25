@@ -1,0 +1,26 @@
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+
+One cannot make a button "submittable" as well as "go-to-other-page" at the same time like this:
+<button type="submit" >
+    <a href="url"> join chat </a>
+</button>
+
+SOLUTION: add a eventListener on the <button>
+const button = document.querySelector("button");
+button.addEventListener("click", () => {
+  window.location.assign("url");
+});
+
+other options: window.location.replace("url")  ----> does not provide history.
+                window.location.href = "url"  ----> not testable.
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+Always use JSON.stringify while storing 
+AND        JSON.pase while fetching.
+IF you want the data to persist in it's actual form.

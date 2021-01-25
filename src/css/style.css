@@ -36,7 +36,10 @@ header {
   background: #ffffffab;
   width: 90%;
   max-width: 1050px;
-  height: 70%;
+  /* height: auto; */
+  /* height: 60%;
+  max-height: 50vh; */
+  /* max-height: 60%; */
   display: flex;
   flex-direction: column;
 }
@@ -68,7 +71,8 @@ h1 {
 /* chat-body*/
 .chat-body {
   display: flex;
-  min-height: 300px;
+  /* min-height: 300px; */
+  max-height: 65vh;
 }
 /* lists (left) */
 .lists {
@@ -95,12 +99,14 @@ h1 {
   /* max-width: 10px; */
 }
 .lists-items {
-  height: auto;
+  height: 80%;
   padding: 0.5rem;
 }
 .user-list {
   text-decoration: none;
   list-style: none;
+  max-height: 100%;
+  overflow: auto;
 }
 .user-list li {
   padding-top: 0.5rem;
@@ -109,6 +115,7 @@ h1 {
 .chats {
   background-color: #bec5f5;
   width: 80%;
+  max-height: 100%;
   overflow: auto;
 }
 .chat-message {
@@ -157,4 +164,27 @@ h1 {
   -moz-transform: scale(1.05);
   -ms-transform: scale(1.05);
   -o-transform: scale(1.05);
+}
+/* links a*/
+a {
+  text-decoration: none;
+  display: block;
+  height: 100%;
+  width: 100%;
+  color: #414349;
+  z-index: -1;
+}
+.join-chat {
+  border: 1px solid rgb(124, 122, 122);
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  background-color: #fefeff;
+  border-radius: 0.1rem;
+  -webkit-border-radius: 0.1rem;
+  -moz-border-radius: 0.1rem;
+  -ms-border-radius: 0.1rem;
+  -o-border-radius: 0.1rem;
+}
+.join-in {
+  margin-right: 0.7rem;
 }

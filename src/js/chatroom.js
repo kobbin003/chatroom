@@ -1,30 +1,63 @@
 import "../css/style.css";
-console.log("chatroom dot js edited");
-
+/** not using qs */
+// var qs = require("qs");
+// const { username, room } = qs.parse(location.search, {
+//   ignoreQueryPrefix: true,
+// });
+// console.log(location.search);
+// console.log(window.location);
 const socket = io();
-
+const username = sessionStorage.getItem("username");
+const room = sessionStorage.getItem("room");
+console.log({ username, room });
 socket.on("message", (message) => console.log(message));
+
+/** on joining room */
+socket.emit("join-room", { username, room });
+
+/** chowing usersList */
+socket.on("user-list", (message) => {
+  showUserList(message);
+});
 /** DOM's */
 let messageContainer = document.getElementById("chats");
-// Message Submit
+
+/** On window load */
+window.addEventListener("load", () => {
+  /** get sessionStorage */
+  const username = sessionStorage.getItem("username");
+  const room = sessionStorage.getItem("room");
+  /** set room name */
+  const room_name = document.getElementById("room-name");
+  room_name.innerHTML = `<p>${room}</p>`;
+});
+
+/** Message Submit */
 let form = document.querySelector(".chat-message");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log("submitted");
+  /** get message text */
+  const msg = e.target.elements.messageSent.value;
+
+  /** emit the message, along with the sender's name, to server */
+  socket.emit("chatmessage", {
+    msg,
+    user: sessionStorage.getItem("username"),
+    room: sessionStorage.getItem("room"),
+  });
+
+  /** clear the input */
+  e.target.elements.messageSent.value = "";
+  e.target.elements.messageSent.focus;
 });
-// form.addEventListener("submit", (e) => {
-//   e.preventDefault();
-//   /** get message text */
-//   const msg = e.target.elements.messageSent.value;
+/** show messages by bot on the DOM */
+socket.on("message", (message) => {
+  outputMessage(message);
+  /** scroll down */
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+});
 
-//   /** emit the message to server */
-//   socket.emit("chatmessage", msg);
-
-//   /** clear the input */
-//   e.target.elements.messageSent.value = "";
-//   e.target.elements.messageSent.focus;
-// });
-//  show chatmessages on DOM
+/** show chatmessages on DOM */
 socket.on("chatmessage", (message) => {
   outputMessage(message);
 
@@ -33,17 +66,37 @@ socket.on("chatmessage", (message) => {
   // scrollHeight = how much hidden.
   messageContainer.scrollTop = messageContainer.scrollHeight;
 });
+/** show users on the board ??????? */
+socket.on("user-name", (name) => {
+  console.log("user", name);
+  const userlist = document.querySelector(".user-list");
+  name.map((item) => (userlist.innerHTML += `<li>${name}</li>`));
+});
 
-// output message to dom
+/** onCLick go to chatroom */
+const leaveButton = document.querySelector(".leave-button");
+leaveButton.addEventListener("click", () => {
+  window.location.assign("./");
+  sessionStorage.setItem("username", "");
+  sessionStorage.setItem("room", "");
+});
+/** output message to dom */
 function outputMessage(message) {
   const messagebox = document.getElementById("chats");
   messagebox.innerHTML += `<div class="chat-board" id="chat-board">
     <div class="chat-board-info">
-      <p><b>kobin</b></p>
-      <p><b>17-01-2021</b></p>
+      <p><b>${message.username}</b></p>
+      <p><b>${message.time}</b></p>
     </div>
     <div class="chat-board-text">
-      <div id="chatmessagebox"><p>${message}</p></div>
+      <div id="chatmessagebox"><p>${message.text}</p></div>
     </div>
   </div>`;
+}
+
+function showUserList(lists) {
+  const userList = document.querySelector(".user-list");
+  /** empty list before adding the list */
+  userList.innerHTML = "";
+  lists.forEach((list) => (userList.innerHTML += `<li>${list.username}</li>`));
 }
